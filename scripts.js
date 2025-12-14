@@ -573,3 +573,151 @@ window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
 });
+
+// Pull-to-refresh implementation
+let touchStartY = 0;
+let touchEndY = 0;
+let isPulling = false;
+let pullIndicator = null;
+
+// Create pull indicator element
+function createPullIndicator() {
+    if (pullIndicator) return;
+    
+    pullIndicator = document.createElement('div');
+    pullIndicator.id = 'pullIndicator';
+    pullIndicator.innerHTML = '<i class="fas fa-sync-alt"></i><span>Pull to refresh</span>';
+    pullIndicator.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 15px;
+        background: linear-gradient(135deg, #da1a32, #b81529);
+        color: white;
+        font-weight: bold;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+        z-index: 9999;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    `;
+    document.body.prepend(pullIndicator);
+}
+
+// Refresh app - clears cache and reloads data from Google Sheets
+async function refreshApp() {
+    // Show loading state
+    if (pullIndicator) {
+        pullIndicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Refreshing...</span>';
+        pullIndicator.style.transform = 'translateY(0)';
+    }
+    
+    document.body.style.cursor = 'wait';
+    
+    try {
+        // Clear the service worker cache to get fresh scripts
+        if ('caches' in window) {
+            const cacheNames = await caches.keys();
+            await Promise.all(
+                cacheNames.map(cacheName => caches.delete(cacheName))
+            );
+            console.log('Cache cleared');
+        }
+        
+        // Clear local data to force reload from Google Sheets
+        rulesData = [];
+        racesData = [];
+        resultsData = [];
+        
+        // Determine current page and reload its data
+        const currentPage = window.location.hash.slice(1) || 'home';
+        
+        if (currentPage === 'races') {
+            await loadRaces();
+        } else if (currentPage === 'rules') {
+            await loadRules();
+        } else if (currentPage === 'results') {
+            await loadResults();
+        }
+        
+        // Update service worker
+        if ('serviceWorker' in navigator) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            for (const registration of registrations) {
+                await registration.update();
+            }
+        }
+        
+        // Show success message
+        if (pullIndicator) {
+            pullIndicator.innerHTML = '<i class="fas fa-check"></i><span>Refreshed!</span>';
+            setTimeout(() => {
+                pullIndicator.style.transform = 'translateY(-100%)';
+            }, 1000);
+        }
+        
+    } catch (error) {
+        console.error('Error refreshing app:', error);
+        
+        if (pullIndicator) {
+            pullIndicator.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span>Refresh failed, reloading...</span>';
+        }
+        
+        // Fallback to full page reload
+        setTimeout(() => {
+            window.location.reload(true);
+        }, 500);
+    } finally {
+        document.body.style.cursor = 'default';
+    }
+}
+
+// Touch event handlers for pull-to-refresh
+document.addEventListener('touchstart', (e) => {
+    if (window.scrollY === 0) {
+        touchStartY = e.touches[0].clientY;
+        isPulling = true;
+        createPullIndicator();
+    }
+}, { passive: true });
+
+document.addEventListener('touchmove', (e) => {
+    if (!isPulling || window.scrollY > 0) {
+        isPulling = false;
+        return;
+    }
+    
+    const currentY = e.touches[0].clientY;
+    const pullDistance = currentY - touchStartY;
+    
+    if (pullDistance > 0 && pullIndicator) {
+        const progress = Math.min(pullDistance / 100, 1);
+        pullIndicator.style.transform = `translateY(${-100 + (progress * 100)}%)`;
+        
+        if (pullDistance > 100) {
+            pullIndicator.innerHTML = '<i class="fas fa-sync-alt"></i><span>Release to refresh</span>';
+        } else {
+            pullIndicator.innerHTML = '<i class="fas fa-arrow-down"></i><span>Pull to refresh</span>';
+        }
+    }
+}, { passive: true });
+
+document.addEventListener('touchend', (e) => {
+    if (!isPulling) return;
+    
+    touchEndY = e.changedTouches[0].clientY;
+    const pullDistance = touchEndY - touchStartY;
+    
+    // If pulled down more than 100px while at top of page
+    if (window.scrollY === 0 && pullDistance > 100) {
+        refreshApp();
+    } else if (pullIndicator) {
+        pullIndicator.style.transform = 'translateY(-100%)';
+    }
+    
+    isPulling = false;
+}, { passive: true });
