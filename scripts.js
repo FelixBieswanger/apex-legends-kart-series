@@ -199,12 +199,12 @@ async function loadRules() {
             carousel.innerHTML = rulesData.map((rule, index) => `
                 <div class="card" data-index="${index}">
                     <div class="card-content">
-                        <div class="rule-number">${index + 1}</div>
+                        <div class="rule-number">${rule.nr || index + 1}</div>
                         <h3 class="title is-5 has-text-white">
-                            ${rule.Title || rule.title || rule.Rule || rule.rule || `Rule ${index + 1}`}
+                            Rule ${rule.nr || index + 1}
                         </h3>
                         <p class="has-text-grey-light">
-                            ${rule.Description || rule.description || rule.Details || rule.details || rule.Text || rule.text || ''}
+                            ${rule.rule || rule.Rule || rule.Description || rule.description || rule.Details || rule.details || rule.Text || rule.text || rule.Title || rule.title || ''}
                         </p>
                     </div>
                 </div>
@@ -273,7 +273,7 @@ async function loadRulesForSignup() {
                 <div class="field">
                     <label class="checkbox">
                         <input type="checkbox" class="rule-checkbox" data-index="${index}">
-                        <strong>${index + 1}.</strong> ${rule.Title || rule.title || rule.Rule || rule.rule || `Rule ${index + 1}`}
+                        <strong>${rule.nr || index + 1}.</strong> ${rule.rule || rule.Rule || rule.Title || rule.title || `Rule ${rule.nr || index + 1}`}
                     </label>
                 </div>
             `).join('');
