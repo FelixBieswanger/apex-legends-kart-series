@@ -303,10 +303,9 @@ body {
         left: 1rem;
     }
     
-    .race-card-wrapper:nth-child(odd),
-    .race-card-wrapper:nth-child(even) {
-        padding-left: 2.5rem;
-        padding-right: 0;
+    .race-card-wrapper {
+        padding-left: 2.5rem !important;
+        padding-right: 0 !important;
     }
 }
 
