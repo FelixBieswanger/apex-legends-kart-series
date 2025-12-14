@@ -198,11 +198,12 @@
             });
         }
         
-        // Show install prompt for iOS users
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        const isStandalone = window.navigator.standalone === true;
+        // Show install prompt for iOS users using feature detection
+        const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         
-        if (isIOS && !isStandalone) {
+        // Show prompt if: touch device, not already running standalone, and standalone is supported
+        if (isTouchDevice && !isStandalone && 'standalone' in window.navigator) {
             document.getElementById('installPrompt').classList.add('show');
         }
         
