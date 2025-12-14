@@ -1,7 +1,8 @@
-const CACHE_NAME = 'apex-kart-v2';
+const CACHE_NAME = 'apex-kart-v3';
 const urlsToCache = [
   './',
   './index.html',
+  './styles.css',
   './manifest.json',
   './icons/icon-72.png',
   './icons/icon-96.png',
