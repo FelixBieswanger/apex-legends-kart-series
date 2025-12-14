@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#da1a32">
-    <meta name="description" content="Progressive Web App for Apex Legends Kart Series">
+    <meta name="description" content="Progressive Web App for Apex Legends Kart Series 2026">
     
     <!-- iOS specific meta tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,39 +21,91 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
     
-    <title>Apex Legends Kart Series</title>
+    <!-- Bulma CSS Framework -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <title>Apex Legends Kart Series 2026</title>
     
     <style>
+        :root {
+            --primary-red: #da1a32;
+            --primary-red-dark: #b31528;
+            --dark-bg: #1a1a1a;
+            --dark-card: #2d2d2d;
+            --light-gray: #e8e8e8;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        html, body {
+            background: var(--dark-bg);
             color: #ffffff;
             min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        body {
             display: flex;
             flex-direction: column;
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
         
-        header {
-            background: #da1a32;
-            padding: 1rem;
-            text-align: center;
+        /* Navigation */
+        .navbar {
+            background: var(--dark-card) !important;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         
-        header h1 {
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
+        .navbar-brand .navbar-item {
             font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 1.2rem;
+            color: var(--primary-red) !important;
         }
         
-        main {
+        .navbar-burger span {
+            background-color: white !important;
+        }
+        
+        .navbar-menu {
+            background: var(--dark-card);
+        }
+        
+        .navbar-item {
+            color: white !important;
+        }
+        
+        .navbar-item:hover {
+            background: var(--primary-red) !important;
+        }
+        
+        .navbar-item.is-active {
+            background: var(--primary-red) !important;
+            color: white !important;
+        }
+        
+        /* Hero Section */
+        .hero-body {
+            padding: 1.5rem;
+        }
+        
+        .hero.is-dark {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-card) 100%);
+        }
+        
+        .hero-logo {
+            max-width: 200px;
+            margin-bottom: 1rem;
+        }
+        
+        /* Page container */
+        .page {
+            display: none;
             flex: 1;
             padding: 1rem;
             max-width: 1200px;
@@ -61,76 +113,218 @@
             margin: 0 auto;
         }
         
-        .card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-        
-        .card h2 {
-            color: #da1a32;
-            margin-bottom: 0.5rem;
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-        }
-        
-        .card p {
-            line-height: 1.6;
-            font-size: clamp(0.9rem, 3vw, 1rem);
-        }
-        
-        .install-prompt {
-            background: #da1a32;
-            color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 1rem;
-            display: none;
-        }
-        
-        .install-prompt.show {
+        .page.active {
             display: block;
         }
         
-        .btn {
-            background: #da1a32;
+        /* Cards */
+        .card {
+            background: var(--dark-card);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background: var(--primary-red);
+            box-shadow: none;
+        }
+        
+        .card-header-title {
             color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
             font-weight: bold;
+        }
+        
+        .card-content {
+            color: var(--light-gray);
+        }
+        
+        /* Carousel */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+        
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .carousel .card {
+            flex: 0 0 85%;
+            max-width: 350px;
+            scroll-snap-align: start;
+            margin-bottom: 0;
+        }
+        
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
             cursor: pointer;
-            margin-top: 0.5rem;
-            width: 100%;
-            max-width: 300px;
+            transition: background 0.3s;
         }
         
-        .btn:active {
-            transform: scale(0.98);
+        .carousel-dot.active {
+            background: var(--primary-red);
         }
         
-        footer {
+        /* Buttons */
+        .button.is-primary {
+            background: var(--primary-red);
+            border: none;
+        }
+        
+        .button.is-primary:hover {
+            background: var(--primary-red-dark);
+        }
+        
+        .button.is-primary:focus {
+            box-shadow: 0 0 0 0.125em rgba(218, 26, 50, 0.25);
+        }
+        
+        /* Form styles */
+        .input, .textarea {
+            background: var(--dark-bg);
+            border-color: #444;
+            color: white;
+        }
+        
+        .input:focus, .textarea:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 0.125em rgba(218, 26, 50, 0.25);
+        }
+        
+        .input::placeholder, .textarea::placeholder {
+            color: #888;
+        }
+        
+        .label {
+            color: var(--light-gray);
+        }
+        
+        .checkbox {
+            color: var(--light-gray);
+        }
+        
+        /* Race Card */
+        .race-card {
+            border-left: 4px solid var(--primary-red);
+        }
+        
+        .race-date {
+            font-size: 0.9rem;
+            color: var(--primary-red);
+            font-weight: bold;
+        }
+        
+        .race-location {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        /* Rule number badge */
+        .rule-number {
+            background: var(--primary-red);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Photo upload */
+        .photo-upload {
+            border: 2px dashed #444;
+            border-radius: 12px;
+            padding: 2rem;
             text-align: center;
-            padding: 1rem;
-            font-size: 0.875rem;
-            opacity: 0.7;
+            cursor: pointer;
+            transition: border-color 0.3s;
         }
         
-        @media (min-width: 768px) {
-            main {
-                padding: 2rem;
+        .photo-upload:hover {
+            border-color: var(--primary-red);
+        }
+        
+        .photo-upload.has-image {
+            border-style: solid;
+            border-color: var(--primary-red);
+        }
+        
+        .photo-preview {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--dark-card);
+            padding: 1.5rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* Loading spinner */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: var(--primary-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Success/Error messages */
+        .notification {
+            margin-bottom: 1rem;
+        }
+        
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .hero-body {
+                padding: 1rem;
             }
             
-            .card {
-                padding: 2rem;
-            }
-            
-            .btn {
-                width: auto;
+            .carousel .card {
+                flex: 0 0 90%;
             }
         }
         
@@ -141,54 +335,670 @@
                 padding-bottom: max(1rem, env(safe-area-inset-bottom));
             }
         }
+        
+        /* Checkered flag pattern for headers */
+        .checkered-border {
+            background-image: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 10px,
+                white 10px,
+                white 20px
+            ),
+            repeating-linear-gradient(
+                90deg,
+                white,
+                white 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            background-size: 40px 10px, 40px 10px;
+            background-position: 0 0, 20px 10px;
+            background-repeat: repeat-x;
+            height: 20px;
+        }
+        
+        /* Install banner */
+        .install-banner {
+            background: var(--primary-red);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            display: none;
+        }
+        
+        .install-banner.show {
+            display: block;
+        }
+        
+        /* Section titles */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-title i {
+            color: var(--primary-red);
+        }
+        
+        /* Tag styles */
+        .tag.is-danger {
+            background: var(--primary-red);
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🏎️ Apex Legends Kart Series</h1>
-    </header>
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="#home" onclick="navigateTo('home')">
+                🏎️ Apex Kart Series
+            </a>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="navMenu" class="navbar-menu">
+            <div class="navbar-end">
+                <a class="navbar-item is-active" href="#home" onclick="navigateTo('home')">
+                    <i class="fas fa-home mr-2"></i> Home
+                </a>
+                <a class="navbar-item" href="#races" onclick="navigateTo('races')">
+                    <i class="fas fa-flag-checkered mr-2"></i> Races
+                </a>
+                <a class="navbar-item" href="#rules" onclick="navigateTo('rules')">
+                    <i class="fas fa-book mr-2"></i> Rules
+                </a>
+                <a class="navbar-item" href="#signup" onclick="navigateTo('signup')">
+                    <i class="fas fa-user-plus mr-2"></i> Sign Up
+                </a>
+            </div>
+        </div>
+    </nav>
     
-    <main>
-        <div class="install-prompt" id="installPrompt">
-            <p><strong>Install this app on your device!</strong></p>
-            <p>For iOS: Tap the <span aria-label="Share button">Share button</span> then "Add to Home Screen"</p>
-            <button class="btn" id="dismissBtn">Got it!</button>
-        </div>
-        
-        <div class="card">
-            <h2>Welcome!</h2>
-            <p>Welcome to the Apex Legends Kart Series Progressive Web App. This app is designed to work seamlessly on your mobile device.</p>
-        </div>
-        
-        <div class="card">
-            <h2>Features</h2>
-            <p>✓ Works offline once installed<br>
-               ✓ Responsive mobile-first design<br>
-               ✓ iOS Safari compatible<br>
-               ✓ Add to Home Screen support</p>
-        </div>
-        
-        <div class="card">
-            <h2>Getting Started</h2>
-            <p>To install this app on your iOS device:</p>
-            <ol style="margin-left: 1.5rem; margin-top: 0.5rem; line-height: 1.8;">
-                <li>Tap the Share button (⬆️) in Safari</li>
-                <li>Scroll down and tap "Add to Home Screen"</li>
-                <li>Tap "Add" to confirm</li>
-                <li>The app icon will appear on your home screen!</li>
-            </ol>
-        </div>
-    </main>
+    <!-- Install Banner -->
+    <div class="install-banner" id="installBanner">
+        <p><strong>📱 Install this app!</strong> Tap Share → "Add to Home Screen"</p>
+        <button class="button is-small is-light mt-2" onclick="dismissInstallBanner()">Got it!</button>
+    </div>
     
-    <footer>
-        <p>&copy; 2025 Apex Legends Kart Series. All rights reserved.</p>
+    <!-- HOME PAGE -->
+    <div id="home" class="page active">
+        <section class="hero is-dark">
+            <div class="hero-body has-text-centered">
+                <img src="https://github.com/user-attachments/assets/ca45accd-9730-46af-8266-c43d099213a7" 
+                     alt="Apex Legends Kart Series 2026" 
+                     class="hero-logo"
+                     style="max-width: 280px; border-radius: 12px;">
+                <h1 class="title is-2 has-text-white mt-4">Welcome Racers!</h1>
+                <p class="subtitle has-text-grey-light">Amateur Karting Cup 2026</p>
+            </div>
+        </section>
+        
+        <div class="columns is-multiline mt-4">
+            <div class="column is-12-mobile is-4-tablet">
+                <div class="card">
+                    <div class="card-header">
+                        <p class="card-header-title">
+                            <i class="fas fa-flag-checkered mr-2"></i> Upcoming Races
+                        </p>
+                    </div>
+                    <div class="card-content">
+                        <p>View all scheduled races and their details.</p>
+                        <button class="button is-primary is-fullwidth mt-3" onclick="navigateTo('races')">
+                            View Races
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column is-12-mobile is-4-tablet">
+                <div class="card">
+                    <div class="card-header">
+                        <p class="card-header-title">
+                            <i class="fas fa-book mr-2"></i> Rules
+                        </p>
+                    </div>
+                    <div class="card-content">
+                        <p>Read all the racing rules before signing up.</p>
+                        <button class="button is-primary is-fullwidth mt-3" onclick="navigateTo('rules')">
+                            View Rules
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column is-12-mobile is-4-tablet">
+                <div class="card">
+                    <div class="card-header">
+                        <p class="card-header-title">
+                            <i class="fas fa-user-plus mr-2"></i> Sign Up
+                        </p>
+                    </div>
+                    <div class="card-content">
+                        <p>Register as a racer for the upcoming season.</p>
+                        <button class="button is-primary is-fullwidth mt-3" onclick="navigateTo('signup')">
+                            Sign Up Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- RACES PAGE -->
+    <div id="races" class="page">
+        <h2 class="section-title">
+            <i class="fas fa-flag-checkered"></i> Upcoming Races
+        </h2>
+        
+        <div id="racesLoading" class="loading">
+            <div class="spinner"></div>
+        </div>
+        
+        <div id="racesContent" style="display: none;">
+            <div id="racesList"></div>
+        </div>
+        
+        <div id="racesError" class="notification is-danger" style="display: none;">
+            <p>Unable to load races. Please try again later.</p>
+        </div>
+    </div>
+    
+    <!-- RULES PAGE -->
+    <div id="rules" class="page">
+        <h2 class="section-title">
+            <i class="fas fa-book"></i> Racing Rules
+        </h2>
+        
+        <p class="mb-4 has-text-grey-light">Swipe through all the rules. All racers must acknowledge these rules before signing up.</p>
+        
+        <div id="rulesLoading" class="loading">
+            <div class="spinner"></div>
+        </div>
+        
+        <div id="rulesContent" class="carousel-container" style="display: none;">
+            <div id="rulesCarousel" class="carousel"></div>
+            <div id="rulesNav" class="carousel-nav"></div>
+        </div>
+        
+        <div id="rulesError" class="notification is-danger" style="display: none;">
+            <p>Unable to load rules. Please try again later.</p>
+        </div>
+    </div>
+    
+    <!-- SIGNUP PAGE -->
+    <div id="signup" class="page">
+        <h2 class="section-title">
+            <i class="fas fa-user-plus"></i> Racer Sign Up
+        </h2>
+        
+        <div id="signupSuccess" class="notification is-success" style="display: none;">
+            <button class="delete" onclick="this.parentElement.style.display='none'"></button>
+            <strong>Success!</strong> You have been registered as a racer.
+        </div>
+        
+        <div id="signupError" class="notification is-danger" style="display: none;">
+            <button class="delete" onclick="this.parentElement.style.display='none'"></button>
+            <span id="signupErrorText">An error occurred. Please try again.</span>
+        </div>
+        
+        <form id="signupForm" onsubmit="handleSignup(event)">
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">
+                        <i class="fas fa-user mr-2"></i> Your Information
+                    </p>
+                </div>
+                <div class="card-content">
+                    <div class="field">
+                        <label class="label">Full Name *</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="text" id="racerName" placeholder="Enter your full name" required>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">Profile Photo</label>
+                        <div class="photo-upload" id="photoUpload" onclick="document.getElementById('photoInput').click()">
+                            <img id="photoPreview" class="photo-preview" style="display: none;">
+                            <div id="photoPlaceholder">
+                                <i class="fas fa-camera fa-2x mb-2" style="color: #666;"></i>
+                                <p class="has-text-grey">Tap to upload a photo</p>
+                            </div>
+                        </div>
+                        <input type="file" id="photoInput" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">
+                        <i class="fas fa-check-circle mr-2"></i> Acknowledge Rules
+                    </p>
+                </div>
+                <div class="card-content">
+                    <div id="rulesCheckboxes">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="field mt-4">
+                        <label class="checkbox">
+                            <input type="checkbox" id="acknowledgeAll" required>
+                            <strong> I acknowledge and agree to ALL the above rules *</strong>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="button is-primary is-large is-fullwidth" id="submitBtn">
+                <i class="fas fa-check mr-2"></i> Complete Registration
+            </button>
+        </form>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>&copy; 2026 Apex Legends Kart Series. All rights reserved.</p>
+            <p class="is-size-7">Made with ❤️ for amateur racers</p>
+        </div>
     </footer>
     
     <script>
+        // Google Sheets Configuration
+        const SHEET_ID = '1_TJF_-He2zpZ5-OlHtVmWGCZu57_ab18p3idRLC8D0U';
+        const API_KEY = ''; // For public sheets, we use the published CSV method
+        
+        // Sheet names (as tabs in Google Sheets)
+        const SHEETS = {
+            RACES: 'Races',
+            RULES: 'Rules',
+            RACERS: 'Racists' // As per the issue description
+        };
+        
+        // Function to get sheet data using published CSV method
+        function getSheetUrl(sheetName) {
+            // Using the gviz/tq endpoint which returns JSON for public sheets
+            return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+        }
+        
+        // Parse the weird Google response format
+        function parseGoogleSheetsResponse(text) {
+            // Remove the google.visualization.Query.setResponse() wrapper
+            // Use a more specific pattern to safely extract the JSON payload
+            const match = text.match(/^google\.visualization\.Query\.setResponse\((.+)\);?$/s);
+            if (!match) {
+                throw new Error('Invalid Google Sheets response format');
+            }
+            const jsonString = match[1];
+            const data = JSON.parse(jsonString);
+            
+            if (data.status !== 'ok') {
+                throw new Error(data.errors?.[0]?.message || 'Failed to load data');
+            }
+            
+            const table = data.table;
+            const headers = table.cols.map(col => col.label || col.id);
+            const rows = table.rows.map(row => {
+                const obj = {};
+                row.c.forEach((cell, index) => {
+                    obj[headers[index]] = cell ? (cell.v || '') : '';
+                });
+                return obj;
+            });
+            
+            return { headers, rows };
+        }
+        
+        // Fetch sheet data
+        async function fetchSheetData(sheetName) {
+            try {
+                const response = await fetch(getSheetUrl(sheetName));
+                const text = await response.text();
+                return parseGoogleSheetsResponse(text);
+            } catch (error) {
+                console.error(`Error fetching ${sheetName}:`, error);
+                throw error;
+            }
+        }
+        
+        // State management
+        let rulesData = [];
+        let racesData = [];
+        let photoDataUrl = null;
+        
+        // Navigation
+        function navigateTo(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update nav active state
+            document.querySelectorAll('.navbar-item').forEach(item => {
+                item.classList.remove('is-active');
+                if (item.getAttribute('href') === '#' + pageId) {
+                    item.classList.add('is-active');
+                }
+            });
+            
+            // Close mobile menu
+            document.querySelector('.navbar-menu').classList.remove('is-active');
+            document.querySelector('.navbar-burger').classList.remove('is-active');
+            
+            // Load page data if needed
+            if (pageId === 'races' && racesData.length === 0) {
+                loadRaces();
+            }
+            if (pageId === 'rules' && rulesData.length === 0) {
+                loadRules();
+            }
+            if (pageId === 'signup') {
+                loadRulesForSignup();
+            }
+            
+            // Update URL hash
+            window.location.hash = pageId;
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Handle hash navigation
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.slice(1) || 'home';
+            if (['home', 'races', 'rules', 'signup'].includes(hash)) {
+                navigateTo(hash);
+            }
+        });
+        
+        // Load races from Google Sheets
+        async function loadRaces() {
+            try {
+                document.getElementById('racesLoading').style.display = 'flex';
+                document.getElementById('racesContent').style.display = 'none';
+                document.getElementById('racesError').style.display = 'none';
+                
+                const data = await fetchSheetData(SHEETS.RACES);
+                racesData = data.rows;
+                
+                const racesList = document.getElementById('racesList');
+                
+                if (racesData.length === 0) {
+                    racesList.innerHTML = '<div class="notification is-info">No races scheduled yet. Check back soon!</div>';
+                } else {
+                    racesList.innerHTML = racesData.map((race, index) => `
+                        <div class="card race-card">
+                            <div class="card-content">
+                                <div class="race-date">
+                                    <i class="fas fa-calendar-alt mr-1"></i>
+                                    ${race.Date || race.date || 'TBA'}
+                                </div>
+                                <div class="race-location">
+                                    <i class="fas fa-map-marker-alt mr-1" style="color: var(--primary-red);"></i>
+                                    ${race.Location || race.location || race.Track || race.track || 'Location TBA'}
+                                </div>
+                                <p class="has-text-grey-light mt-2">
+                                    ${race.Description || race.description || race.Notes || race.notes || ''}
+                                </p>
+                                ${race.Status || race.status ? `
+                                    <span class="tag ${(race.Status || race.status).toLowerCase() === 'upcoming' ? 'is-success' : 'is-warning'} mt-3">
+                                        ${race.Status || race.status}
+                                    </span>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                
+                document.getElementById('racesLoading').style.display = 'none';
+                document.getElementById('racesContent').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading races:', error);
+                document.getElementById('racesLoading').style.display = 'none';
+                document.getElementById('racesError').style.display = 'block';
+            }
+        }
+        
+        // Load rules from Google Sheets
+        async function loadRules() {
+            try {
+                document.getElementById('rulesLoading').style.display = 'flex';
+                document.getElementById('rulesContent').style.display = 'none';
+                document.getElementById('rulesError').style.display = 'none';
+                
+                const data = await fetchSheetData(SHEETS.RULES);
+                rulesData = data.rows;
+                
+                const carousel = document.getElementById('rulesCarousel');
+                const nav = document.getElementById('rulesNav');
+                
+                if (rulesData.length === 0) {
+                    carousel.innerHTML = '<div class="notification is-info">No rules defined yet.</div>';
+                } else {
+                    carousel.innerHTML = rulesData.map((rule, index) => `
+                        <div class="card" data-index="${index}">
+                            <div class="card-content">
+                                <div class="rule-number">${index + 1}</div>
+                                <h3 class="title is-5 has-text-white">
+                                    ${rule.Title || rule.title || rule.Rule || rule.rule || `Rule ${index + 1}`}
+                                </h3>
+                                <p class="has-text-grey-light">
+                                    ${rule.Description || rule.description || rule.Details || rule.details || rule.Text || rule.text || ''}
+                                </p>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    // Add navigation dots
+                    nav.innerHTML = rulesData.map((_, index) => 
+                        `<div class="carousel-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></div>`
+                    ).join('');
+                    
+                    // Add scroll listener for dots
+                    carousel.addEventListener('scroll', updateCarouselDots);
+                    
+                    // Add click listener for dots
+                    nav.querySelectorAll('.carousel-dot').forEach(dot => {
+                        dot.addEventListener('click', () => {
+                            const index = parseInt(dot.dataset.index);
+                            const card = carousel.querySelector(`[data-index="${index}"]`);
+                            card.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+                        });
+                    });
+                }
+                
+                document.getElementById('rulesLoading').style.display = 'none';
+                document.getElementById('rulesContent').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading rules:', error);
+                document.getElementById('rulesLoading').style.display = 'none';
+                document.getElementById('rulesError').style.display = 'block';
+            }
+        }
+        
+        function updateCarouselDots() {
+            const carousel = document.getElementById('rulesCarousel');
+            const cards = carousel.querySelectorAll('.card');
+            const dots = document.querySelectorAll('#rulesNav .carousel-dot');
+            
+            let activeIndex = 0;
+            cards.forEach((card, index) => {
+                const rect = card.getBoundingClientRect();
+                const carouselRect = carousel.getBoundingClientRect();
+                if (rect.left >= carouselRect.left && rect.left < carouselRect.left + carouselRect.width / 2) {
+                    activeIndex = index;
+                }
+            });
+            
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === activeIndex);
+            });
+        }
+        
+        // Load rules checkboxes for signup page
+        async function loadRulesForSignup() {
+            const container = document.getElementById('rulesCheckboxes');
+            
+            try {
+                if (rulesData.length === 0) {
+                    const data = await fetchSheetData(SHEETS.RULES);
+                    rulesData = data.rows;
+                }
+                
+                if (rulesData.length === 0) {
+                    container.innerHTML = '<p class="has-text-grey">No rules to acknowledge.</p>';
+                } else {
+                    container.innerHTML = rulesData.map((rule, index) => `
+                        <div class="field">
+                            <label class="checkbox">
+                                <input type="checkbox" class="rule-checkbox" data-index="${index}">
+                                <strong>${index + 1}.</strong> ${rule.Title || rule.title || rule.Rule || rule.rule || `Rule ${index + 1}`}
+                            </label>
+                        </div>
+                    `).join('');
+                    
+                    // Add listener to check all individual boxes when "acknowledge all" is checked
+                    document.getElementById('acknowledgeAll').addEventListener('change', function() {
+                        document.querySelectorAll('.rule-checkbox').forEach(cb => {
+                            cb.checked = this.checked;
+                        });
+                    });
+                }
+            } catch (error) {
+                container.innerHTML = '<p class="has-text-danger">Failed to load rules. Please refresh the page.</p>';
+            }
+        }
+        
+        // Handle photo upload
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoDataUrl = e.target.result;
+                    document.getElementById('photoPreview').src = photoDataUrl;
+                    document.getElementById('photoPreview').style.display = 'block';
+                    document.getElementById('photoPlaceholder').style.display = 'none';
+                    document.getElementById('photoUpload').classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Handle signup form submission
+        async function handleSignup(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('racerName').value.trim();
+            const acknowledgeAll = document.getElementById('acknowledgeAll').checked;
+            
+            // Hide previous messages
+            document.getElementById('signupSuccess').style.display = 'none';
+            document.getElementById('signupError').style.display = 'none';
+            
+            // Validation
+            if (!name) {
+                showSignupError('Please enter your name.');
+                return;
+            }
+            
+            if (!acknowledgeAll) {
+                showSignupError('You must acknowledge all rules to sign up.');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.classList.add('is-loading');
+            submitBtn.disabled = true;
+            
+            try {
+                // For a hobby project without backend, we'll use Google Forms or Apps Script
+                // For now, we'll show success and explain how to set up the backend
+                
+                // Simulating submission - in production, you'd send to a Google Apps Script web app
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Show success
+                document.getElementById('signupSuccess').style.display = 'block';
+                
+                // Reset form
+                document.getElementById('signupForm').reset();
+                document.getElementById('photoPreview').style.display = 'none';
+                document.getElementById('photoPlaceholder').style.display = 'block';
+                document.getElementById('photoUpload').classList.remove('has-image');
+                photoDataUrl = null;
+                
+                // Reload checkboxes
+                loadRulesForSignup();
+                
+                // Scroll to success message
+                document.getElementById('signupSuccess').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                showSignupError('Registration failed. Please try again.');
+            } finally {
+                submitBtn.classList.remove('is-loading');
+                submitBtn.disabled = false;
+            }
+        }
+        
+        function showSignupError(message) {
+            document.getElementById('signupErrorText').textContent = message;
+            document.getElementById('signupError').style.display = 'block';
+            document.getElementById('signupError').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Mobile menu toggle
+        document.querySelector('.navbar-burger').addEventListener('click', function() {
+            this.classList.toggle('is-active');
+            document.querySelector('.navbar-menu').classList.toggle('is-active');
+        });
+        
+        // Install banner
+        function dismissInstallBanner() {
+            document.getElementById('installBanner').classList.remove('show');
+            localStorage.setItem('installBannerDismissed', 'true');
+        }
+        
+        // Show install banner for mobile users
+        function showInstallBanner() {
+            const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const dismissed = localStorage.getItem('installBannerDismissed');
+            
+            if (isTouchDevice && !isStandalone && !dismissed) {
+                document.getElementById('installBanner').classList.add('show');
+            }
+        }
+        
         // Register service worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
+                // Use relative path for GitHub Pages compatibility
+                const swPath = window.location.pathname.includes('/apex-legends-kart-series') 
+                    ? '/apex-legends-kart-series/service-worker.js' 
+                    : '/service-worker.js';
+                    
+                navigator.serviceWorker.register(swPath)
                     .then(registration => {
                         console.log('ServiceWorker registered:', registration);
                     })
@@ -198,26 +1008,22 @@
             });
         }
         
-        // Show install prompt for iOS users using feature detection
-        const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        
-        // Show prompt if: touch device and not already running standalone
-        if (isTouchDevice && !isStandalone) {
-            document.getElementById('installPrompt').classList.add('show');
-        }
-        
-        // Dismiss install prompt
-        document.getElementById('dismissBtn').addEventListener('click', () => {
-            document.getElementById('installPrompt').style.display = 'none';
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            showInstallBanner();
+            
+            // Handle initial hash
+            const hash = window.location.hash.slice(1) || 'home';
+            if (['home', 'races', 'rules', 'signup'].includes(hash)) {
+                navigateTo(hash);
+            }
         });
         
-        // Handle PWA install prompt for other platforms
+        // Handle PWA install prompt for Android/Chrome
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Could show custom install button here
         });
     </script>
 </body>

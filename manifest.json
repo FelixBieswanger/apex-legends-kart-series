@@ -1,8 +1,8 @@
 {
-  "name": "Apex Legends Kart Series",
-  "short_name": "Apex Kart Series",
-  "description": "Progressive Web App for Apex Legends Kart Series",
-  "start_url": "/apex-legends-kart-series/",
+  "name": "Apex Legends Kart Series 2026",
+  "short_name": "Apex Kart",
+  "description": "Progressive Web App for Apex Legends Kart Series - Amateur Karting Cup",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#1a1a1a",
   "theme_color": "#da1a32",
