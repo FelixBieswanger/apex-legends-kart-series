@@ -49,6 +49,27 @@ body {
     color: white !important;
 }
 
+/* Refresh button */
+.navbar-item.refresh-btn {
+    color: var(--primary-red) !important;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    transition: transform 0.3s ease;
+}
+
+.navbar-item.refresh-btn:hover {
+    background: rgba(218, 26, 50, 0.2);
+}
+
+.navbar-item.refresh-btn.is-refreshing i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 .navbar-item:hover {
     background: var(--primary-red) !important;
 }

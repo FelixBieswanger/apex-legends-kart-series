@@ -610,7 +610,14 @@ function createPullIndicator() {
 
 // Refresh app - clears cache and reloads data from Google Sheets
 async function refreshApp() {
-    // Show loading state
+    const refreshBtn = document.querySelector('.navbar-item.refresh-btn');
+    
+    // Show loading state on button
+    if (refreshBtn) {
+        refreshBtn.classList.add('is-refreshing');
+    }
+    
+    // Show loading state on pull indicator
     if (pullIndicator) {
         pullIndicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Refreshing...</span>';
         pullIndicator.style.transform = 'translateY(0)';
@@ -642,6 +649,13 @@ async function refreshApp() {
             await loadRules();
         } else if (currentPage === 'results') {
             await loadResults();
+        } else {
+            // On home page, preload all data
+            await Promise.all([
+                loadRaces().catch(() => {}),
+                loadRules().catch(() => {}),
+                loadResults().catch(() => {})
+            ]);
         }
         
         // Update service worker
@@ -660,6 +674,8 @@ async function refreshApp() {
             }, 1000);
         }
         
+        console.log('App refreshed successfully');
+        
     } catch (error) {
         console.error('Error refreshing app:', error);
         
@@ -673,6 +689,11 @@ async function refreshApp() {
         }, 500);
     } finally {
         document.body.style.cursor = 'default';
+        
+        // Stop button animation
+        if (refreshBtn) {
+            refreshBtn.classList.remove('is-refreshing');
+        }
     }
 }
 
