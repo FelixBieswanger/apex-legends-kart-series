@@ -17,32 +17,54 @@ function getSheetUrl(sheetName) {
 
 // Parse the weird Google response format
 function parseGoogleSheetsResponse(text) {
-    // Remove the google.visualization.Query.setResponse() wrapper
-    // Use a more specific pattern to safely extract the JSON payload
-    // Trim whitespace and handle potential line breaks
-    const trimmedText = text.trim();
-    const match = trimmedText.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);?\s*$/);
-    if (!match) {
-        throw new Error('Invalid Google Sheets response format');
-    }
-    const jsonString = match[1];
-    const data = JSON.parse(jsonString);
-    
-    if (data.status !== 'ok') {
-        throw new Error(data.errors?.[0]?.message || 'Failed to load data');
-    }
-    
-    const table = data.table;
-    const headers = table.cols.map(col => col.label || col.id);
-    const rows = table.rows.map(row => {
-        const obj = {};
-        row.c.forEach((cell, index) => {
-            obj[headers[index]] = cell ? (cell.v || '') : '';
+    try {
+        // Remove the google.visualization.Query.setResponse() wrapper
+        // Use a more specific pattern to safely extract the JSON payload
+        // Trim whitespace and handle potential line breaks
+        // Also handle the /*O_o*/ comment prefix that Google Sheets includes
+        const trimmedText = text.trim();
+        
+        // Try to extract the JSON from the JSONP callback
+        const match = trimmedText.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);?\s*$/);
+        if (!match) {
+            throw new Error('Invalid Google Sheets response format');
+        }
+        
+        const jsonString = match[1];
+        const data = JSON.parse(jsonString);
+        
+        // Check if the response status is ok
+        if (data.status !== 'ok') {
+            throw new Error(data.errors?.[0]?.message || 'Failed to load data');
+        }
+        
+        // Safely access the table data
+        if (!data.table || !data.table.cols || !data.table.rows) {
+            throw new Error('Invalid table structure in response');
+        }
+        
+        const table = data.table;
+        const headers = table.cols.map(col => col.label || col.id);
+        const rows = table.rows.map(row => {
+            const obj = {};
+            // Safely handle missing or null cells
+            if (row.c) {
+                row.c.forEach((cell, index) => {
+                    const header = headers[index];
+                    if (header) {
+                        obj[header] = cell && cell.v !== null && cell.v !== undefined ? cell.v : '';
+                    }
+                });
+            }
+            return obj;
         });
-        return obj;
-    });
-    
-    return { headers, rows };
+        
+        return { headers, rows };
+    } catch (error) {
+        console.error('Error parsing Google Sheets response:', error);
+        console.error('Response text (first 500 chars):', text.substring(0, 500));
+        throw error;
+    }
 }
 
 // Fetch sheet data
