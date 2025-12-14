@@ -186,6 +186,18 @@ async function loadRaces() {
                                             <div class="kpi-label">Track Length</div>
                                         </div>
                                     ` : ''}
+                                      ${raceType ? `
+                                        <div class="kpi-item">
+                                            <div class="kpi-value">${raceType}</div>
+                                            <div class="kpi-label">Type</div>
+                                        </div>
+                                    ` : ''}
+                                    ${kartType ? `
+                                        <div class="kpi-item">
+                                            <div class="kpi-value">${kartType}</div>
+                                            <div class="kpi-label">Kart</div>
+                                        </div>
+                                    ` : ''}
                                     ${horsePower ? `
                                         <div class="kpi-item">
                                             <div class="kpi-value">${horsePower} PS</div>
@@ -208,16 +220,8 @@ async function loadRaces() {
                                 
                                 <!-- Info Groups -->
                                 <div class="info-groups">
-                                    ${raceType || kartType ? `
-                                        <div class="info-group">
-                                            <div class="info-group-title"><i class="fas fa-car"></i> Kart Info</div>
-                                            <div class="info-group-content">
-                                                ${raceType ? `<span class="info-tag">${raceType}</span>` : ''}
-                                                ${kartType ? `<span class="info-tag">${kartType}</span>` : ''}
-                                            </div>
-                                        </div>
-                                    ` : ''}
-                                    
+        
+                                
                                     ${costPerPerson ? `
                                         <div class="info-group">
                                             <div class="info-group-title"><i class="fas fa-euro-sign"></i> Cost</div>
