@@ -4,9 +4,9 @@ Progressive Web App (PWA) for the Apex Legends Kart Series - Amateur Karting Cup
 
 ## Features
 
-✅ **Races Overview** - View all upcoming races with dates and locations  
-✅ **Rules** - Browse racing rules in a swipeable card carousel  
-✅ **Racer Sign Up** - Register as a racer with name, photo, and rules acknowledgment  
+✅ **Races Overview** - Visual racetrack display with detailed race information  
+✅ **Point System** - Clear breakdown of championship points structure  
+✅ **Rules** - Browse racing rules in a swipeable card carousel with karting backgrounds  
 ✅ **Google Sheets Integration** - All data loaded from a Google Sheet  
 ✅ **iOS Compatible** - Fully optimized for iOS Safari with "Add to Home Screen" support  
 ✅ **Progressive Web App** - Works offline with service worker caching  
@@ -14,10 +14,9 @@ Progressive Web App (PWA) for the Apex Legends Kart Series - Amateur Karting Cup
 
 ## Pages
 
-- **Home** - Welcome page with quick links to all features
-- **Races** - List of upcoming races loaded from Google Sheets
-- **Rules** - Swipeable card carousel with all racing rules
-- **Sign Up** - Registration form with rules acknowledgment
+- **Home** - Welcome page with quick links to races and rules
+- **Races** - Visual racetrack layout showing all races with detailed information (track type, kart specs, costs, times, dates, and links)
+- **Rules** - Point system table and swipeable card carousel with racing rules on karting-themed backgrounds
 
 ## Google Sheets Setup
 
@@ -26,24 +25,24 @@ The app loads data from a Google Sheet. The sheet should have the following tabs
 ### Races Tab
 | Column | Description |
 |--------|-------------|
-| Date | Race date |
-| Location | Track/venue name |
-| Description | Additional details |
-| Status | Race status (e.g., "Upcoming") |
+| Race | Race identifier (e.g., "Race 1") |
+| Name | Track/venue name |
+| Type | Indoor/Outdoor/Indoor+Outdoor |
+| Art | Kart type (Benzin/Elektro) |
+| PS | Horsepower |
+| Länge in meter | Track length in meters |
+| Kosten-Rennpakt pp | Cost per person |
+| Qualifiying in Min | Qualifying time in minutes |
+| Rennen in Min | Race time in minutes |
+| Datum | Race date |
+| Link | Track website URL |
+| Track Image | URL to track layout image |
 
 ### Rules Tab
 | Column | Description |
 |--------|-------------|
-| Title | Rule title/name |
-| Description | Full rule text |
-
-### Racists Tab (Racers)
-Where registered racers are stored:
-| Column | Description |
-|--------|-------------|
-| Name | Racer's full name |
-| Photo | Profile photo (Base64 or URL) |
-| Timestamp | Registration date/time |
+| nr | Rule number |
+| rule | Full rule text |
 
 ## Installation on iOS
 
