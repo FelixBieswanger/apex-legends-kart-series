@@ -194,9 +194,95 @@ body {
     color: var(--light-gray);
 }
 
+/* Racetrack container */
+.racetrack-container {
+    position: relative;
+    padding: 2rem 0;
+}
+
+.racetrack-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(
+        to bottom,
+        var(--primary-red) 0%,
+        var(--primary-red) 50%,
+        transparent 50%,
+        transparent 100%
+    );
+    background-size: 4px 30px;
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
 /* Race Card */
 .race-card {
     border-left: 4px solid var(--primary-red);
+}
+
+.race-card-wrapper {
+    position: relative;
+    margin-bottom: 3rem;
+    z-index: 1;
+}
+
+.race-card-wrapper:nth-child(odd) {
+    padding-right: 50%;
+    padding-left: 0;
+}
+
+.race-card-wrapper:nth-child(even) {
+    padding-left: 50%;
+    padding-right: 0;
+}
+
+.race-card-enhanced {
+    border-left: 4px solid var(--primary-red);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.race-card-enhanced:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(218, 26, 50, 0.3);
+}
+
+.race-card-enhanced .card-image img {
+    max-height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.race-number {
+    display: inline-block;
+    background: var(--primary-red);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.race-details {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.race-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--light-gray);
+}
+
+.race-detail-item i {
+    color: var(--primary-red);
+    width: 20px;
+    text-align: center;
 }
 
 .race-date {
@@ -209,6 +295,19 @@ body {
     font-size: 1.1rem;
     font-weight: bold;
     margin: 0.5rem 0;
+}
+
+/* Mobile view for racetrack */
+@media (max-width: 768px) {
+    .racetrack-line {
+        left: 1rem;
+    }
+    
+    .race-card-wrapper:nth-child(odd),
+    .race-card-wrapper:nth-child(even) {
+        padding-left: 2.5rem;
+        padding-right: 0;
+    }
 }
 
 /* Rule number badge */
@@ -224,6 +323,57 @@ body {
     font-weight: bold;
     font-size: 1.2rem;
     margin-bottom: 1rem;
+}
+
+/* Rule card with background */
+.rule-card-with-bg {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    min-height: 300px;
+    overflow: hidden;
+}
+
+.rule-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(2px);
+}
+
+.rule-card-with-bg .card-content {
+    position: relative;
+    z-index: 1;
+}
+
+.rule-text {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Point system table */
+.point-system-table {
+    background: var(--dark-bg);
+    color: var(--light-gray);
+}
+
+.point-system-table thead th {
+    background: var(--primary-red);
+    color: white;
+    border-color: var(--primary-red);
+}
+
+.point-system-table tbody td {
+    border-color: #444;
+    color: var(--light-gray);
+}
+
+.point-system-table tbody tr:hover {
+    background: rgba(218, 26, 50, 0.1);
 }
 
 /* Photo upload */
