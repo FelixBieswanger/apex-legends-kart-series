@@ -142,7 +142,22 @@
             <i class="fas fa-book"></i> Racing Rules
         </h2>
         
-        <!-- Point System -->
+        <p class="mb-4 has-text-grey-light">Swipe through all the rules below.</p>
+        
+        <div id="rulesLoading" class="loading">
+            <div class="spinner"></div>
+        </div>
+        
+        <div id="rulesContent" class="carousel-container" style="display: none;">
+            <div id="rulesCarousel" class="carousel"></div>
+            <div id="rulesNav" class="carousel-nav"></div>
+        </div>
+        
+        <div id="rulesError" class="notification is-danger" style="display: none;">
+            <p>Unable to load rules. Please try again later.</p>
+        </div>
+
+             <!-- Point System -->
         <div class="card mb-4">
             <div class="card-header">
                 <p class="card-header-title">
@@ -205,21 +220,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        
-        <p class="mb-4 has-text-grey-light">Swipe through all the rules below.</p>
-        
-        <div id="rulesLoading" class="loading">
-            <div class="spinner"></div>
-        </div>
-        
-        <div id="rulesContent" class="carousel-container" style="display: none;">
-            <div id="rulesCarousel" class="carousel"></div>
-            <div id="rulesNav" class="carousel-nav"></div>
-        </div>
-        
-        <div id="rulesError" class="notification is-danger" style="display: none;">
-            <p>Unable to load rules. Please try again later.</p>
         </div>
     </div>
     
