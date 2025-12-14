@@ -639,7 +639,12 @@
         // Parse the weird Google response format
         function parseGoogleSheetsResponse(text) {
             // Remove the google.visualization.Query.setResponse() wrapper
-            const jsonString = text.replace(/^.*?\(/, '').replace(/\);?$/, '');
+            // Use a more specific pattern to safely extract the JSON payload
+            const match = text.match(/^google\.visualization\.Query\.setResponse\((.+)\);?$/s);
+            if (!match) {
+                throw new Error('Invalid Google Sheets response format');
+            }
+            const jsonString = match[1];
             const data = JSON.parse(jsonString);
             
             if (data.status !== 'ok') {
