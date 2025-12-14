@@ -244,13 +244,13 @@ async function loadRaces() {
     }
 }
 
-// Karting background images (free to use images)
+// Karting background images (local images)
 const kartingBackgrounds = [
-    'https://images.unsplash.com/photo-1612892508341-4d6bca7d1d1f?w=800&q=80', // Go-kart racing
-    'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80', // Racing track
-    'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80', // Racing helmet
-    'https://images.unsplash.com/photo-1583874129097-32c4c9682747?w=800&q=80', // Motorsport
-    'https://images.unsplash.com/photo-1547038577-7b3131116dd4?w=800&q=80'  // Racing flags
+    'images/pexels-chris-howard-229664-755298.jpg',
+    'images/photo-1640084347692-e8f6b84caa7c.jpeg',
+    'images/view-car-running-high-speed_23-2150635397.jpg.avif',
+    'images/vintage-racing-poster-featuring-dynamic-race-cars-action-track-red-retro-formula-drivers-helmets-speeding-asphalt-motorsport-385717729.jpg.webp',
+    'images/wM0dy1OOZ95mUR0iDb2Tt3vl32nl_wIExUqW3lLWtJc.jpg.webp'
 ];
 
 // Load rules from Google Sheets
