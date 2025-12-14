@@ -6,7 +6,8 @@ const API_KEY = ''; // For public sheets, we use the published CSV method
 const SHEETS = {
     RACES: 'Races',
     RULES: 'Rules',
-    RACERS: 'Racists' // As per the issue description
+    RACERS: 'Racists', // As per the issue description
+    RESULTS: 'Results'
 };
 
 // Function to get sheet data using published CSV method
@@ -82,6 +83,8 @@ async function fetchSheetData(sheetName) {
 // State management
 let rulesData = [];
 let racesData = [];
+let resultsData = [];
+let championshipChart = null;
 
 // Navigation
 function navigateTo(pageId) {
@@ -112,6 +115,9 @@ function navigateTo(pageId) {
     if (pageId === 'rules' && rulesData.length === 0) {
         loadRules();
     }
+    if (pageId === 'results' && resultsData.length === 0) {
+        loadResults();
+    }
     
     // Update URL hash
     window.location.hash = pageId;
@@ -123,7 +129,7 @@ function navigateTo(pageId) {
 // Handle hash navigation
 window.addEventListener('hashchange', () => {
     const hash = window.location.hash.slice(1) || 'home';
-    if (['home', 'races', 'rules'].includes(hash)) {
+    if (['home', 'races', 'rules', 'results'].includes(hash)) {
         navigateTo(hash);
     }
 });
@@ -345,6 +351,168 @@ function updateCarouselDots() {
     });
 }
 
+// Load results from Google Sheets
+async function loadResults() {
+    try {
+        document.getElementById('resultsLoading').style.display = 'flex';
+        document.getElementById('resultsContent').style.display = 'none';
+        document.getElementById('resultsError').style.display = 'none';
+        
+        const data = await fetchSheetData(SHEETS.RESULTS);
+        resultsData = data.rows;
+        
+        if (resultsData.length === 0) {
+            document.getElementById('leaderboard').innerHTML = '<div class="notification is-info">No results available yet. Check back after the first race!</div>';
+            document.getElementById('resultsLoading').style.display = 'none';
+            document.getElementById('resultsContent').style.display = 'block';
+            return;
+        }
+        
+        // Aggregate points by racer name
+        const racerPoints = {};
+        const racerFastestLaps = {};
+        
+        resultsData.forEach(result => {
+            const name = result['Name'] || result['name'] || '';
+            const points = parseFloat(result['Punkte'] || result['punkte'] || result['Points'] || result['points'] || 0);
+            const fastestRound = result['Fastes-Round'] || result['Fastest-Round'] || result['fastest-round'] || '';
+            
+            if (name) {
+                racerPoints[name] = (racerPoints[name] || 0) + points;
+                if (fastestRound && fastestRound.toLowerCase() === 'yes') {
+                    racerFastestLaps[name] = (racerFastestLaps[name] || 0) + 1;
+                }
+            }
+        });
+        
+        // Convert to sorted array
+        const standings = Object.keys(racerPoints).map(name => ({
+            name: name,
+            points: racerPoints[name],
+            fastestLaps: racerFastestLaps[name] || 0
+        })).sort((a, b) => b.points - a.points);
+        
+        // Render leaderboard
+        renderLeaderboard(standings);
+        
+        // Render chart
+        renderChampionshipChart(standings);
+        
+        document.getElementById('resultsLoading').style.display = 'none';
+        document.getElementById('resultsContent').style.display = 'block';
+    } catch (error) {
+        console.error('Error loading results:', error);
+        document.getElementById('resultsLoading').style.display = 'none';
+        document.getElementById('resultsError').style.display = 'block';
+    }
+}
+
+// Render leaderboard table
+function renderLeaderboard(standings) {
+    const leaderboard = document.getElementById('leaderboard');
+    
+    const html = `
+        <div class="leaderboard-container">
+            ${standings.map((racer, index) => {
+                const position = index + 1;
+                const medalClass = position === 1 ? 'gold' : position === 2 ? 'silver' : position === 3 ? 'bronze' : '';
+                const medalIcon = position === 1 ? '🥇' : position === 2 ? '🥈' : position === 3 ? '🥉' : '';
+                
+                return `
+                    <div class="leaderboard-row ${medalClass}">
+                        <div class="leaderboard-position">
+                            ${medalIcon || `<span class="position-number">${position}</span>`}
+                        </div>
+                        <div class="leaderboard-name">
+                            <strong>${racer.name}</strong>
+                            ${racer.fastestLaps > 0 ? `<span class="fastest-lap-badge"><i class="fas fa-stopwatch"></i> ${racer.fastestLaps}</span>` : ''}
+                        </div>
+                        <div class="leaderboard-points">
+                            <span class="points-value">${racer.points}</span>
+                            <span class="points-label">pts</span>
+                        </div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+    
+    leaderboard.innerHTML = html;
+}
+
+// Render championship chart using Chart.js
+function renderChampionshipChart(standings) {
+    const ctx = document.getElementById('championshipChart');
+    
+    if (!ctx) return;
+    
+    // Destroy previous chart if exists
+    if (championshipChart) {
+        championshipChart.destroy();
+    }
+    
+    const labels = standings.map(s => s.name);
+    const data = standings.map(s => s.points);
+    
+    championshipChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Points',
+                data: data,
+                backgroundColor: [
+                    'rgba(218, 26, 50, 0.8)',  // Primary red
+                    'rgba(218, 26, 50, 0.7)',
+                    'rgba(218, 26, 50, 0.6)',
+                    'rgba(218, 26, 50, 0.5)',
+                    'rgba(218, 26, 50, 0.4)',
+                    'rgba(218, 26, 50, 0.3)',
+                    'rgba(218, 26, 50, 0.2)',
+                    'rgba(218, 26, 50, 0.1)'
+                ],
+                borderColor: 'rgba(218, 26, 50, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Points: ' + context.parsed.y;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#ffffff',
+                        stepSize: 5
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#ffffff'
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                }
+            }
+        }
+    });
+}
 
 
 // Mobile menu toggle
@@ -394,7 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Handle initial hash
     const hash = window.location.hash.slice(1) || 'home';
-    if (['home', 'races', 'rules'].includes(hash)) {
+    if (['home', 'races', 'rules', 'results'].includes(hash)) {
         navigateTo(hash);
     }
 });
