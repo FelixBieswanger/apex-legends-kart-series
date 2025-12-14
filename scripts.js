@@ -269,14 +269,18 @@ async function loadRulesForSignup() {
         if (rulesData.length === 0) {
             container.innerHTML = '<p class="has-text-grey">No rules to acknowledge.</p>';
         } else {
-            container.innerHTML = rulesData.map((rule, index) => `
-                <div class="field">
-                    <label class="checkbox">
-                        <input type="checkbox" class="rule-checkbox" data-index="${index}">
-                        <strong>${rule.nr || index + 1}.</strong> ${rule.rule || rule.Rule || rule.Title || rule.title || `Rule ${rule.nr || index + 1}`}
-                    </label>
-                </div>
-            `).join('');
+            container.innerHTML = rulesData.map((rule, index) => {
+                const ruleNum = rule.nr || index + 1;
+                const ruleText = rule.rule || rule.Rule || rule.Title || rule.title || `Rule ${ruleNum}`;
+                return `
+                    <div class="field">
+                        <label class="checkbox">
+                            <input type="checkbox" class="rule-checkbox" data-index="${index}">
+                            <strong>${ruleNum}.</strong> ${ruleText}
+                        </label>
+                    </div>
+                `;
+            }).join('');
             
             // Add listener to check all individual boxes when "acknowledge all" is checked
             document.getElementById('acknowledgeAll').addEventListener('change', function() {
