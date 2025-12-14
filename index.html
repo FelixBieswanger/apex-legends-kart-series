@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <!-- Custom Styles -->
     <link rel="stylesheet" href="styles.css">
     
@@ -53,6 +55,9 @@
                 </a>
                 <a class="navbar-item" href="#rules" onclick="navigateTo('rules')">
                     <i class="fas fa-book mr-2"></i> Rules
+                </a>
+                <a class="navbar-item" href="#results" onclick="navigateTo('results')">
+                    <i class="fas fa-trophy mr-2"></i> Results
                 </a>
             </div>
         </div>
@@ -110,6 +115,21 @@
                 </div>
             </div>
             
+            <div class="column is-12-mobile is-6-tablet">
+                <div class="card">
+                    <div class="card-header">
+                        <p class="card-header-title">
+                            <i class="fas fa-trophy mr-2"></i> Results
+                        </p>
+                    </div>
+                    <div class="card-content">
+                        <p>Check the current championship standings.</p>
+                        <button class="button is-primary is-fullwidth mt-3" onclick="navigateTo('results')">
+                            View Results
+                        </button>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -223,6 +243,46 @@
         </div>
     </div>
     
+    <!-- RESULTS PAGE -->
+    <div id="results" class="page">
+        <h2 class="section-title">
+            <i class="fas fa-trophy"></i> Championship Results
+        </h2>
+        
+        <div id="resultsLoading" class="loading">
+            <div class="spinner"></div>
+        </div>
+        
+        <div id="resultsContent" style="display: none;">
+            <!-- Championship Status Chart -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <p class="card-header-title">
+                        <i class="fas fa-chart-bar mr-2"></i> Championship Standings
+                    </p>
+                </div>
+                <div class="card-content">
+                    <canvas id="championshipChart" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+            
+            <!-- Leaderboard -->
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">
+                        <i class="fas fa-list-ol mr-2"></i> Leaderboard
+                    </p>
+                </div>
+                <div class="card-content">
+                    <div id="leaderboard"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="resultsError" class="notification is-danger" style="display: none;">
+            <p>Unable to load results. Please try again later.</p>
+        </div>
+    </div>
 
     
     <!-- Footer -->

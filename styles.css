@@ -670,3 +670,126 @@ body {
 .tag.is-danger {
     background: var(--primary-red);
 }
+
+/* Results Page - Leaderboard */
+.leaderboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.leaderboard-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--dark-bg);
+    border-radius: 8px;
+    border-left: 4px solid transparent;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.leaderboard-row:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.leaderboard-row.gold {
+    border-left-color: #FFD700;
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, var(--dark-bg) 100%);
+}
+
+.leaderboard-row.silver {
+    border-left-color: #C0C0C0;
+    background: linear-gradient(90deg, rgba(192, 192, 192, 0.1) 0%, var(--dark-bg) 100%);
+}
+
+.leaderboard-row.bronze {
+    border-left-color: #CD7F32;
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, var(--dark-bg) 100%);
+}
+
+.leaderboard-position {
+    font-size: 1.5rem;
+    min-width: 50px;
+    text-align: center;
+}
+
+.position-number {
+    font-weight: bold;
+    color: var(--light-gray);
+}
+
+.leaderboard-name {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.leaderboard-name strong {
+    color: white;
+    font-size: 1.1rem;
+}
+
+.fastest-lap-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: var(--primary-red);
+    color: white;
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    width: fit-content;
+}
+
+.leaderboard-points {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 80px;
+}
+
+.points-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-red);
+}
+
+.points-label {
+    font-size: 0.75rem;
+    color: var(--light-gray);
+    text-transform: uppercase;
+}
+
+/* Championship Chart */
+#championshipChart {
+    max-height: 300px;
+}
+
+/* Mobile adjustments for leaderboard */
+@media (max-width: 768px) {
+    .leaderboard-row {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+    
+    .leaderboard-position {
+        font-size: 1.25rem;
+        min-width: 40px;
+    }
+    
+    .leaderboard-name strong {
+        font-size: 1rem;
+    }
+    
+    .points-value {
+        font-size: 1.25rem;
+    }
+    
+    .leaderboard-points {
+        min-width: 60px;
+    }
+}
