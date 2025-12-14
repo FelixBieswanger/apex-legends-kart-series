@@ -151,7 +151,7 @@
     <main>
         <div class="install-prompt" id="installPrompt">
             <p><strong>Install this app on your device!</strong></p>
-            <p>For iOS: Tap Share <span style="font-size: 1.2em;">⬆️</span> then "Add to Home Screen"</p>
+            <p>For iOS: Tap the <span aria-label="Share button">Share button</span> then "Add to Home Screen"</p>
             <button class="btn" id="dismissBtn">Got it!</button>
         </div>
         
@@ -202,8 +202,8 @@
         const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         
-        // Show prompt if: touch device, not already running standalone, and standalone is supported
-        if (isTouchDevice && !isStandalone && 'standalone' in window.navigator) {
+        // Show prompt if: touch device and not already running standalone
+        if (isTouchDevice && !isStandalone) {
             document.getElementById('installPrompt').classList.add('show');
         }
         
