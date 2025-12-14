@@ -169,7 +169,7 @@ async function loadRaces() {
                             ` : ''}
                             <div class="card-content">
                                 <div class="race-number">${raceName}</div>
-                                <h3 class="title is-4 mb-3">${trackName}</h3>
+                                <h3 class="title is-4 mb-3" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 3em;">${trackName}</h3>
                                 
                                 ${raceDate && raceDate !== 'TBA' ? `
                                     <div class="race-date-banner">
@@ -287,7 +287,7 @@ async function loadRules() {
                         <div class="rule-card-overlay">
                             <div class="card-content">
                                 <div class="rule-number">${rule.nr || index + 1}</div>
-                                <h3 class="title is-5 has-text-white">
+                                <h3 class="title is-5 has-text-white" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.5em;">
                                     Rule ${rule.nr || index + 1}
                                 </h3>
                                 <p class="has-text-white rule-text">
