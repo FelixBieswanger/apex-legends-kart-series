@@ -169,55 +169,62 @@ async function loadRaces() {
                             ` : ''}
                             <div class="card-content">
                                 <div class="race-number">${raceName}</div>
-                                <h3 class="title is-4 has-text-white mb-3">${trackName}</h3>
+                                <h3 class="title is-4 mb-3">${trackName}</h3>
                                 
-                                <div class="race-details">
-                                    ${raceType ? `
-                                        <div class="race-detail-item">
-                                            <i class="fas fa-home"></i>
-                                            <span><strong>Type:</strong> ${raceType}</span>
-                                        </div>
-                                    ` : ''}
-                                    ${kartType ? `
-                                        <div class="race-detail-item">
-                                            <i class="fas fa-car"></i>
-                                            <span><strong>Kart Type:</strong> ${kartType}</span>
+                                ${raceDate && raceDate !== 'TBA' ? `
+                                    <div class="race-date-banner">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <span>${raceDate}</span>
+                                    </div>
+                                ` : ''}
+                                
+                                <!-- KPI Grid -->
+                                <div class="kpi-grid">
+                                    ${trackLength ? `
+                                        <div class="kpi-item">
+                                            <div class="kpi-value">${trackLength}m</div>
+                                            <div class="kpi-label">Track Length</div>
                                         </div>
                                     ` : ''}
                                     ${horsePower ? `
-                                        <div class="race-detail-item">
-                                            <i class="fas fa-tachometer-alt"></i>
-                                            <span><strong>Power:</strong> ${horsePower} PS</span>
-                                        </div>
-                                    ` : ''}
-                                    ${trackLength ? `
-                                        <div class="race-detail-item">
-                                            <i class="fas fa-road"></i>
-                                            <span><strong>Length:</strong> ${trackLength}m</span>
-                                        </div>
-                                    ` : ''}
-                                    ${costPerPerson ? `
-                                        <div class="race-detail-item">
-                                            <i class="fas fa-euro-sign"></i>
-                                            <span><strong>Cost per Person:</strong> ${costPerPerson}</span>
+                                        <div class="kpi-item">
+                                            <div class="kpi-value">${horsePower} PS</div>
+                                            <div class="kpi-label">Power</div>
                                         </div>
                                     ` : ''}
                                     ${qualifyingTime ? `
-                                        <div class="race-detail-item">
-                                            <i class="fas fa-stopwatch"></i>
-                                            <span><strong>Qualifying:</strong> ${qualifyingTime} min</span>
+                                        <div class="kpi-item">
+                                            <div class="kpi-value">${qualifyingTime} min</div>
+                                            <div class="kpi-label">Qualifying</div>
                                         </div>
                                     ` : ''}
                                     ${raceTime ? `
-                                        <div class="race-detail-item">
-                                            <i class="fas fa-flag-checkered"></i>
-                                            <span><strong>Race:</strong> ${raceTime} min</span>
+                                        <div class="kpi-item">
+                                            <div class="kpi-value">${raceTime} min</div>
+                                            <div class="kpi-label">Race Time</div>
                                         </div>
                                     ` : ''}
-                                    ${raceDate && raceDate !== 'TBA' ? `
-                                        <div class="race-detail-item">
-                                            <i class="fas fa-calendar-alt"></i>
-                                            <span><strong>Date:</strong> ${raceDate}</span>
+                                </div>
+                                
+                                <!-- Info Groups -->
+                                <div class="info-groups">
+                                    ${raceType || kartType ? `
+                                        <div class="info-group">
+                                            <div class="info-group-title"><i class="fas fa-car"></i> Kart Info</div>
+                                            <div class="info-group-content">
+                                                ${raceType ? `<span class="info-tag">${raceType}</span>` : ''}
+                                                ${kartType ? `<span class="info-tag">${kartType}</span>` : ''}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${costPerPerson ? `
+                                        <div class="info-group">
+                                            <div class="info-group-title"><i class="fas fa-euro-sign"></i> Cost</div>
+                                            <div class="info-group-content">
+                                                <span class="cost-value">${costPerPerson}</span>
+                                                <span class="cost-label">per person</span>
+                                            </div>
                                         </div>
                                     ` : ''}
                                 </div>
