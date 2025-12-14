@@ -82,7 +82,6 @@ async function fetchSheetData(sheetName) {
 // State management
 let rulesData = [];
 let racesData = [];
-let photoDataUrl = null;
 
 // Navigation
 function navigateTo(pageId) {
@@ -113,9 +112,6 @@ function navigateTo(pageId) {
     if (pageId === 'rules' && rulesData.length === 0) {
         loadRules();
     }
-    if (pageId === 'signup') {
-        loadRulesForSignup();
-    }
     
     // Update URL hash
     window.location.hash = pageId;
@@ -127,7 +123,7 @@ function navigateTo(pageId) {
 // Handle hash navigation
 window.addEventListener('hashchange', () => {
     const hash = window.location.hash.slice(1) || 'home';
-    if (['home', 'races', 'rules', 'signup'].includes(hash)) {
+    if (['home', 'races', 'rules'].includes(hash)) {
         navigateTo(hash);
     }
 });
@@ -147,28 +143,96 @@ async function loadRaces() {
         if (racesData.length === 0) {
             racesList.innerHTML = '<div class="notification is-info">No races scheduled yet. Check back soon!</div>';
         } else {
-            racesList.innerHTML = racesData.map((race, index) => `
-                <div class="card race-card">
-                    <div class="card-content">
-                        <div class="race-date">
-                            <i class="fas fa-calendar-alt mr-1"></i>
-                            ${race.Date || race.date || 'TBA'}
+            racesList.innerHTML = racesData.map((race, index) => {
+                const raceName = race['Race'] || `Race ${index + 1}`;
+                const trackName = race['Name'] || 'TBA';
+                const raceType = race['Type'] || '';
+                const kartType = race['Art'] || '';
+                const horsePower = race['PS'] || '';
+                const trackLength = race['Länge in meter'] || '';
+                const costPerPerson = race['Kosten-Rennpakt pp'] || '';
+                const qualifyingTime = race['Qualifiying in Min'] || '';
+                const raceTime = race['Rennen in Min'] || '';
+                const raceDate = race['Datum'] || 'TBA';
+                const trackLink = race['Link'] || '';
+                const trackImage = race['Track Image'] || '';
+                
+                return `
+                    <div class="race-card-wrapper">
+                        <div class="card race-card-enhanced">
+                            ${trackImage ? `
+                                <div class="card-image">
+                                    <figure class="image">
+                                        <img src="${trackImage}" alt="${trackName}" onerror="this.parentElement.parentElement.style.display='none'">
+                                    </figure>
+                                </div>
+                            ` : ''}
+                            <div class="card-content">
+                                <div class="race-number">${raceName}</div>
+                                <h3 class="title is-4 has-text-white mb-3">${trackName}</h3>
+                                
+                                <div class="race-details">
+                                    ${raceType ? `
+                                        <div class="race-detail-item">
+                                            <i class="fas fa-home"></i>
+                                            <span><strong>Type:</strong> ${raceType}</span>
+                                        </div>
+                                    ` : ''}
+                                    ${kartType ? `
+                                        <div class="race-detail-item">
+                                            <i class="fas fa-car"></i>
+                                            <span><strong>Kart Type:</strong> ${kartType}</span>
+                                        </div>
+                                    ` : ''}
+                                    ${horsePower ? `
+                                        <div class="race-detail-item">
+                                            <i class="fas fa-tachometer-alt"></i>
+                                            <span><strong>Power:</strong> ${horsePower} PS</span>
+                                        </div>
+                                    ` : ''}
+                                    ${trackLength ? `
+                                        <div class="race-detail-item">
+                                            <i class="fas fa-road"></i>
+                                            <span><strong>Length:</strong> ${trackLength}m</span>
+                                        </div>
+                                    ` : ''}
+                                    ${costPerPerson ? `
+                                        <div class="race-detail-item">
+                                            <i class="fas fa-euro-sign"></i>
+                                            <span><strong>Cost per Person:</strong> ${costPerPerson}</span>
+                                        </div>
+                                    ` : ''}
+                                    ${qualifyingTime ? `
+                                        <div class="race-detail-item">
+                                            <i class="fas fa-stopwatch"></i>
+                                            <span><strong>Qualifying:</strong> ${qualifyingTime} min</span>
+                                        </div>
+                                    ` : ''}
+                                    ${raceTime ? `
+                                        <div class="race-detail-item">
+                                            <i class="fas fa-flag-checkered"></i>
+                                            <span><strong>Race:</strong> ${raceTime} min</span>
+                                        </div>
+                                    ` : ''}
+                                    ${raceDate && raceDate !== 'TBA' ? `
+                                        <div class="race-detail-item">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span><strong>Date:</strong> ${raceDate}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                
+                                ${trackLink ? `
+                                    <a href="${trackLink}" target="_blank" rel="noopener noreferrer" class="button is-primary is-fullwidth mt-4">
+                                        <i class="fas fa-external-link-alt mr-2"></i>
+                                        Visit Track Website
+                                    </a>
+                                ` : ''}
+                            </div>
                         </div>
-                        <div class="race-location">
-                            <i class="fas fa-map-marker-alt mr-1" style="color: var(--primary-red);"></i>
-                            ${race.Location || race.location || race.Track || race.track || 'Location TBA'}
-                        </div>
-                        <p class="has-text-grey-light mt-2">
-                            ${race.Description || race.description || race.Notes || race.notes || ''}
-                        </p>
-                        ${race.Status || race.status ? `
-                            <span class="tag ${(race.Status || race.status).toLowerCase() === 'upcoming' ? 'is-success' : 'is-warning'} mt-3">
-                                ${race.Status || race.status}
-                            </span>
-                        ` : ''}
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         
         document.getElementById('racesLoading').style.display = 'none';
@@ -179,6 +243,15 @@ async function loadRaces() {
         document.getElementById('racesError').style.display = 'block';
     }
 }
+
+// Karting background images (free to use images)
+const kartingBackgrounds = [
+    'https://images.unsplash.com/photo-1612892508341-4d6bca7d1d1f?w=800&q=80', // Go-kart racing
+    'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80', // Racing track
+    'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80', // Racing helmet
+    'https://images.unsplash.com/photo-1583874129097-32c4c9682747?w=800&q=80', // Motorsport
+    'https://images.unsplash.com/photo-1547038577-7b3131116dd4?w=800&q=80'  // Racing flags
+];
 
 // Load rules from Google Sheets
 async function loadRules() {
@@ -196,19 +269,24 @@ async function loadRules() {
         if (rulesData.length === 0) {
             carousel.innerHTML = '<div class="notification is-info">No rules defined yet.</div>';
         } else {
-            carousel.innerHTML = rulesData.map((rule, index) => `
-                <div class="card" data-index="${index}">
-                    <div class="card-content">
-                        <div class="rule-number">${rule.nr || index + 1}</div>
-                        <h3 class="title is-5 has-text-white">
-                            Rule ${rule.nr || index + 1}
-                        </h3>
-                        <p class="has-text-grey-light">
-                            ${rule.rule || rule.Rule || rule.Description || rule.description || rule.Details || rule.details || rule.Text || rule.text || rule.Title || rule.title || ''}
-                        </p>
+            carousel.innerHTML = rulesData.map((rule, index) => {
+                const bgImage = kartingBackgrounds[index % kartingBackgrounds.length];
+                return `
+                    <div class="card rule-card-with-bg" data-index="${index}" style="background-image: url('${bgImage}');">
+                        <div class="rule-card-overlay">
+                            <div class="card-content">
+                                <div class="rule-number">${rule.nr || index + 1}</div>
+                                <h3 class="title is-5 has-text-white">
+                                    Rule ${rule.nr || index + 1}
+                                </h3>
+                                <p class="has-text-white rule-text">
+                                    ${rule.rule || rule.Rule || rule.Description || rule.description || rule.Details || rule.details || rule.Text || rule.text || rule.Title || rule.title || ''}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
             
             // Add navigation dots
             nav.innerHTML = rulesData.map((_, index) => 
@@ -256,123 +334,7 @@ function updateCarouselDots() {
     });
 }
 
-// Load rules checkboxes for signup page
-async function loadRulesForSignup() {
-    const container = document.getElementById('rulesCheckboxes');
-    
-    try {
-        if (rulesData.length === 0) {
-            const data = await fetchSheetData(SHEETS.RULES);
-            rulesData = data.rows;
-        }
-        
-        if (rulesData.length === 0) {
-            container.innerHTML = '<p class="has-text-grey">No rules to acknowledge.</p>';
-        } else {
-            container.innerHTML = rulesData.map((rule, index) => {
-                const ruleNum = rule.nr || index + 1;
-                const ruleText = rule.rule || rule.Rule || rule.Title || rule.title || `Rule ${ruleNum}`;
-                return `
-                    <div class="field">
-                        <label class="checkbox">
-                            <input type="checkbox" class="rule-checkbox" data-index="${index}">
-                            <strong>${ruleNum}.</strong> ${ruleText}
-                        </label>
-                    </div>
-                `;
-            }).join('');
-            
-            // Add listener to check all individual boxes when "acknowledge all" is checked
-            document.getElementById('acknowledgeAll').addEventListener('change', function() {
-                document.querySelectorAll('.rule-checkbox').forEach(cb => {
-                    cb.checked = this.checked;
-                });
-            });
-        }
-    } catch (error) {
-        container.innerHTML = '<p class="has-text-danger">Failed to load rules. Please refresh the page.</p>';
-    }
-}
 
-// Handle photo upload
-function handlePhotoUpload(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            photoDataUrl = e.target.result;
-            document.getElementById('photoPreview').src = photoDataUrl;
-            document.getElementById('photoPreview').style.display = 'block';
-            document.getElementById('photoPlaceholder').style.display = 'none';
-            document.getElementById('photoUpload').classList.add('has-image');
-        };
-        reader.readAsDataURL(file);
-    }
-}
-
-// Handle signup form submission
-async function handleSignup(event) {
-    event.preventDefault();
-    
-    const name = document.getElementById('racerName').value.trim();
-    const acknowledgeAll = document.getElementById('acknowledgeAll').checked;
-    
-    // Hide previous messages
-    document.getElementById('signupSuccess').style.display = 'none';
-    document.getElementById('signupError').style.display = 'none';
-    
-    // Validation
-    if (!name) {
-        showSignupError('Please enter your name.');
-        return;
-    }
-    
-    if (!acknowledgeAll) {
-        showSignupError('You must acknowledge all rules to sign up.');
-        return;
-    }
-    
-    // Show loading state
-    const submitBtn = document.getElementById('submitBtn');
-    submitBtn.classList.add('is-loading');
-    submitBtn.disabled = true;
-    
-    try {
-        // For a hobby project without backend, we'll use Google Forms or Apps Script
-        // For now, we'll show success and explain how to set up the backend
-        
-        // Simulating submission - in production, you'd send to a Google Apps Script web app
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Show success
-        document.getElementById('signupSuccess').style.display = 'block';
-        
-        // Reset form
-        document.getElementById('signupForm').reset();
-        document.getElementById('photoPreview').style.display = 'none';
-        document.getElementById('photoPlaceholder').style.display = 'block';
-        document.getElementById('photoUpload').classList.remove('has-image');
-        photoDataUrl = null;
-        
-        // Reload checkboxes
-        loadRulesForSignup();
-        
-        // Scroll to success message
-        document.getElementById('signupSuccess').scrollIntoView({ behavior: 'smooth' });
-        
-    } catch (error) {
-        showSignupError('Registration failed. Please try again.');
-    } finally {
-        submitBtn.classList.remove('is-loading');
-        submitBtn.disabled = false;
-    }
-}
-
-function showSignupError(message) {
-    document.getElementById('signupErrorText').textContent = message;
-    document.getElementById('signupError').style.display = 'block';
-    document.getElementById('signupError').scrollIntoView({ behavior: 'smooth' });
-}
 
 // Mobile menu toggle
 document.querySelector('.navbar-burger').addEventListener('click', function() {
@@ -421,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Handle initial hash
     const hash = window.location.hash.slice(1) || 'home';
-    if (['home', 'races', 'rules', 'signup'].includes(hash)) {
+    if (['home', 'races', 'rules'].includes(hash)) {
         navigateTo(hash);
     }
 });
